@@ -1,0 +1,92 @@
+1 Para crear un componente de laravel se usa el siguiente comando
+
+php artisan make:livewire nombreDelComponente
+
+tambien se puede pasar el nombre de una carpeta donde debera generarse dicho componente por ejemplo
+
+php artisan make:livewire Carpeta/nombreDelComponente
+
+afectara a la ruta del archivo blade creado como del archivo php
+
+app/Http/Livewire/Carpeta/nombreDelComponente.php
+resources/views/livewire/Carpeta/nombre-del-componente.blade.php
+
+Esto generara dos archivos el primero en
+
+app/Http/Livewire
+
+y el segundo en
+
+resources/views/livewire
+
+siendo estos segun el comando
+
+app/Http/Livewire/nombreDelComponente.php
+
+resources/views/livewire/nombreDelComponente.blade.php
+
+El archivo .php contiene la logica y el metodo Render del componente, mientras que el archivo blade contiene la vista
+
+El archivo php
+
+- El archivo php seria el equivalente a un controlador
+
+- Cada que cambia algo en la interfaz el metodo render comprobara cambios y mostrara segun sea necesario
+
+- Al recibir datos desde blade se debe definir una propiedad publica para dicho valor, en este ejemplo public $title[1]
+
+- El metodo mount permite recibir los valores desde blade y trabajar con ellos permitiendo reasignar [1] por ejemplo
+
+    public $titulo;
+
+    public function mount($title)
+    {
+        $this->titulo = $title;
+    }
+Esto permitira recibir el valor como title  @livewire('nombre-del-componente',['title'=>'Este es un valor']) y luego hacer uso de el
+usando la variable titulo
+
+-El archivo php controlador puede ser usado de forma directa en una ruta, esto en caso de que se requiera el archivo blade sea lo unico
+que se muestra, por ejemplo
+
+use App\Http\Livewire\ShowPosts; <-- Controlador del componente
+
+Route::get('/dashboard',ShowPosts::class)->name('dashboard'); <-- Ruta que usa el controlador del componente
+
+Esto renderizara la vista del componente usando el slot(el que no tiene nombre $slot) dentro del archivo resources/views/layouts/app.blade
+por defecto en caso de requerir usar un layout distinto a este se debe usar la funcion layout dentro de render, y especificar
+la ruta de dicho archivo(considerando que leera desde views), se pueden usar otros slots con nombre dentro de dicha vista del componente
+
+ public function render()
+    {
+        return view('livewire.show-posts')
+        ->layout('layouts.base');
+    }
+
+Se pueden usa
+
+
+El archivo blade
+
+- Este debe ser siempre contenido dentro de dos etiquetas de inicio y de cierre normalmente un div
+
+- Para traer un componente dentro de un archivo blade se debe usar la directiva de blade @livewire('nombre-del-componente')
+
+- En caso de que el componente se encuentre dentro de una carpeta se debe especificar @livewire('carpeta.nombre-del-componente')
+
+- Para enviar datos a un componente se usa un arreglo asociativo @livewire('nombre-del-componente',['title'=>'Este es un valor'])[1]
+
+- Para enviar datos a un componente que se usa como controlador y uno archivo en una vista
+
+use App\Http\Livewire\ShowPosts; <-- Controlador del componente
+
+Route::get('prueba/{name}',ShowPosts::class);
+
+y se utiliza el método mount
+
+public $name;
+    public function mount($name){
+        $this->name = $name;
+    }
+
+de esta forma es accesible desde la vista del componente
