@@ -1,0 +1,51 @@
+<!-- Métodos mágicos -->
+
+Los métodos mágicos sirven para modificar el valor de una variable de forma rapida, esto ayuda a reducir código en el controlador
+del componente
+
+<x-jet-secondary-button wire:click="$set('open',false)">
+                Cancelar
+</x-jet-secondary-button>
+
+<x-jet-danger-button wire:click="$set('open',true)">
+        Crear nuevo post
+</x-jet-danger-button>
+
+En este caso el componente secondary button asigna el valor false a la variable open del componente, mientras que el danger button
+asigna el valor true
+
+<!-- Defer -->
+
+Se usa para evitar que livewire envie peticiones para actualizar cambios de un valor del controlador del componente por ejemplo
+
+<x-jet-input type="text" class="w-full" wire:model.defer="title" />
+
+<x-jet-danger-button wire:click="save">
+                Crear post
+</x-jet-danger-button>
+
+El componente input tiene asignado el valor title pero no enviara el valor al controlador del componente hasta que otra acción
+dentro de la vista componente sea llamada en este caso el componente danger button que llama a la acción save, esto con la
+intención de no hacer peticiones innecesarias al servidor ya que la intención guardar mas no mostrar en vivo los cambios
+
+
+<!-- Añadir valores con laravel mix a css -->
+
+Dentro de la carpeta resources/css/ se pueden crear diferentes archivos para ser usados como estilos, en este caso en concreto se crea el
+archivo form.css donde se añaden las siguientes lineas
+
+.form-control{
+    @apply border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm
+}
+
+
+Esto para despues incluir dicho archivo en app.css usando las siguientes lineas
+
+@import 'form.css';
+
+para que se reflejen los archivos dentro de el mix se debe utilizar el comando
+
+npm run dev
+
+ahora se podra utilizar la clase .form-control
+
