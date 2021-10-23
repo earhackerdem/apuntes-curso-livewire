@@ -1,0 +1,72 @@
+Livewire permite añadir acciones en el código HTML escrito en blade
+
+
+<th class="cursor-pointer" wire:click="order('title')">
+<th class="cursor-pointer" wire:click="order('content')">
+
+En este caso los elementos th tienen asignado una accion click la cual llama a una función llamada order que recibe un parametro
+En el controlador de dicho componente se define la funcion order y se prepara para recibir los parametros
+
+public function order($sort)
+    {
+
+        if ($this->sort == $sort) {
+
+            if ($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+        } else {
+            $this->sort = $sort;
+            $this->direction = 'asc';
+        }
+    }
+}
+
+Es decir el parametro que se esta enviando es $sort
+
+En este caso ya que sort es una variable que depende de la interacción del usuario se escribe código dentro del archivo blade que
+se renderizara según el valor de sort
+
+@if ($sort == 'title')
+@if($direction =='asc')
+    <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+@else
+<i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+@endif
+
+ @else
+     <i class="fas fa-sort float-right mt-1"></i>
+ @endif
+
+--Instalación de fontawesome laravel jetstream
+
+1.- First, set up webpack.mix.js as follows:
+
+mix.js('resources/js/app.js', 'public/js')
+.postCss('resources/css/app.css', 'public/css', [
+
+     require('postcss-import'),
+     require('tailwindcss'),
+     require('autoprefixer'),
+ ])
+.sass('resources/sass/app.scss', 'public/css');
+if (mix.inProduction()) {
+    mix.version();
+}
+2.- Go ahead and install fontawesome:
+
+npm install --save @fortawesome/fontawesome-free
+3.- Create a new file "resources/sass/app.scss" and include the following:
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+4.- Execute the following commands:
+
+npm install && npm run dev
+and again
+
+npm run dev

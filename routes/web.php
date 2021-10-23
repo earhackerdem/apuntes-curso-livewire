@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard',ShowPosts::class)->name('dashboard');
+
