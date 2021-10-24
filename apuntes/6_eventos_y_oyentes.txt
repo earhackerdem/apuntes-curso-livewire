@@ -1,0 +1,74 @@
+<!-- Eventos y oyentes -->
+
+Para comunicar componentes se debe usar los metodos emit y la propiedad listener
+
+<!-- Emitir evento -->
+
+Esto enviara al componente show-post el evento render
+$this->emitTo('show-post', 'render');
+
+donde
+
+$this->emitTo('componente que escucha','evento-que-se-envia');
+
+Esto emitira el evento alert con el mensaje 'El posts...'
+$this->emit('alert', 'El post se creó satisfactoriamente');
+
+Tambien se puede emitir un evento sin definir oyentes o parametros, todos los componentes involucrados en el mismo blade
+escucharan este evento(siempre que esten listos para escuchar el evento)
+
+$this->emit('render');
+
+<!-- Escuchar evento -->
+
+Para escuchar eventos dentro de un controlador de un componente se debe usar la propiedad listeners que es un arreglo
+
+protected $listeners = ['render'=>'render'];
+                       ['evento-que-escucha'=>'función-que-ejecuta']
+
+
+Esto escuchara el evento render y procedera a ejecutar la función render, en caso de que el evento que escucha y el nombre de la función
+que se pretende ejecutar tengan el mismo nombre se puede omitir definir el nombre de la función es decir
+
+protected $listeners = ['render'];
+
+Esto escuchara el evento render y ejecutara la función render
+
+Se pueden emitir y escuchar eventos desde blade haciendo uso de scripts
+
+        <script>
+            Livewire.on('alert',(message)=>{
+                Swal.fire(
+                 'Good job!',
+                 message,
+                 'success'
+                )
+            });
+        </script>
+
+En este caso el script Livewire.on escucha al evento alert y recibe el parametro message a traves de un callback
+
+
+De la misma forma se pueden emitir eventos desde blade por ejemplo
+
+<button wire:click="$emit('postAdded')">
+
+<button wire:click="$emitTo('counter', 'postAdded')">
+
+Documentación
+
+https://laravel-livewire.com/docs/2.x/events
+
+
+<!-- La función reset -->
+
+$this->reset(['open', 'title', 'content']);
+
+La función reset permite regresar al valor inicial al conjunto de variables definidas en el arreglo que recibe como parametro
+En este caso en concreto
+
+public $open = false;
+
+    public $title, $content;
+
+Open regresara a false mientras que title y content regresaran a undefined
