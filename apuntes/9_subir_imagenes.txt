@@ -1,0 +1,73 @@
+Para subir imagenes con livewire se debe utilizar el trait WithFileUploads dentro del controlador del componente
+
+
+use Livewire\WithFileUploads;
+
+class CreatePost extends Component
+{
+...
+use WithFileUploads;
+
+$image = $this->image->store('posts');
+
+Post::create([
+            'title' => $this->title,
+            'content' => $this->content,
+            'image' => $image
+        ]);
+        ...
+}
+
+Aprovechando los estados de carga se muestra un elemento mientras que la imagen es pre-cargada al servidor
+
+<div wire:loading wire:target="image" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">¡Imagen cargando!</strong>
+                <span class="block sm:inline">Espere un momento hasta que la imagen se haya procesado</span>
+</div>
+
+en este caso el div solo se mostrara en el estado de carga loading para la variable image del componente
+
+de la misma manera al boton de guardado se le desactiva mientras se carga la imagen con la finalidad de evitar un error de validación
+
+ <x-jet-danger-button wire:click="save" wire:loading.attr="disabled" wire:target="save, image"
+                class="disabled:opacity-25">
+                Crear post
+            </x-jet-danger-button>
+
+como se puede ver el target puede recibir nombres de funciones y de valores del componente
+
+unas ves que el usuario haya seleccionado una imagen esta se encontrara en un archivo temporal al cual se puede acceder
+para mostrar una vista previa, haciendo uso de la funcion temporaryUrl()
+
+@if ($image)
+    <img class="mb-4" src="{{ $image->temporaryUrl() }}" alt="">
+@endif
+
+con la finalidad que el input de dicha imagen se limpie despues del guardado se le asigna un id aleatorio para que livewire los considere
+diferentes y entonces renderize dicho input
+
+<div>
+                <input type="file" wire:model="image" id="{{ $identificador }}">
+                <x-jet-input-error for="error" />
+            </div>
+
+
+public function mount()
+    {
+        $this->identificador = rand();
+    }
+
+
+ public function save()
+    {
+        ...
+
+        $this->reset(['open', 'title', 'content','image']);
+
+        $this->identificador = rand();
+
+        ...
+    }
+
+    Esto reseteara el valor de open title content e imagen ademas de asignar un valor nuevo al identificador del input lo que permite que
+    despues del guardado se encuentre vacio
