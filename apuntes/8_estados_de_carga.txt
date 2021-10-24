@@ -1,0 +1,39 @@
+En este caso se espera el estado de carga loading
+
+<span wire:loading wire:target="save">Cargando...</span>
+
+El span  solo se mostrara cuando se ejecute un estado loading y en especifico de la función save
+esto en caso de que existan otros estados loading como por ejemplo la actualización del valor de una propiedad publica del componente
+
+El span estara oculto y utilizara la clase in-line-block para hacerse visible en caso de requerir otras clases para que sea visible
+se pueden especificar de la siguiente manera:
+
+wire.loading.flex
+wire.loading.grid
+wire.loading.inline
+wire.loading.table
+wire.loading.
+
+
+En el caso del danger-button este tomara la propiedad disabled usando attr despues de definir el estado de carga loading
+ademas haciendo el uso de tailwind cuando la class disabled se encuentre en ejecución se anadira una opacity de 25
+
+<x-jet-danger-button wire:click="save" wire:loading.attr="disabled" wire:target="save" class="disabled:opacity-25">
+                Crear post
+</x-jet-danger-button>
+
+Tambien se pueden modificar las clases haciendo uso de class por ejemplo
+
+<x-jet-danger-button wire:click="save" wire:loading.class="bg-blue-500" wire:target="save">
+                Crear post
+</x-jet-danger-button>
+
+
+En este caso el boton cambiara su color a azul mientras se encuentre en estado de carga loading disparado por save
+
+
+Se puede remover un elemento con la finalidad de que no sea usado mientras se encuentra en el estado de carga
+
+<x-jet-danger-button wire:click="save" wire:loading.remove wire:target="save">
+                Crear post
+</x-jet-danger-button>
