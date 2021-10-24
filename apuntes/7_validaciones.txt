@@ -1,0 +1,50 @@
+Para validar usando livewire se utilizan una función y una propiedad
+
+ protected $rules = [
+        'title' => 'required|max:10',
+        'content' => 'required|min:100'
+    ];
+
+La propiedad protegida $rules que es un arreglo asociativo, y la función validate que ejecuta las propiedades de dicho arreglo
+
+
+public function save()
+    {
+
+        $this->validate();    <------- Validación
+
+        Post::create([
+            'title' => $this->title,
+            'content' => $this->content
+        ]);
+
+        $this->reset(['open', 'title', 'content']);
+
+        $this->emitTo('show-post', 'render');
+        $this->emit('alert', 'El post se creó satisfactoriamente');
+    }
+
+
+
+En este caso no guardara si $this->validate regresa errores
+
+<!-- Validación en tiempo real -->
+
+
+public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
+Se utiliza la función updated que recibe como parametro la propiedad y ejecuta validateOnly para validar solo dicha propiedad
+para esto se debe de permitir que la propiedad se actualize en tiempo real(sin defers)
+
+
+Funcionara
+
+<x-jet-input type="text" class="w-full" wire:model="title" />
+
+
+No funcionara
+
+<textarea class="form-control w-full" rows="6" wire:model.defer="content"></textarea>
