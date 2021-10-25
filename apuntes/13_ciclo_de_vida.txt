@@ -1,0 +1,26 @@
+13 - Ciclo de vida
+
+Se le llama así a los dintintos estados por los cuales puede pasar una variable y tambien el componente
+en este caso nos interesa que antes de que se ejecute el cambio de la variable search y por tanto se renderize el componente, se
+resetee la pagina y pierda los valores de su paginación y de esta forma pueda encontrar los datos que se esperan
+
+
+public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+Esto afectara directamente a search
+
+public function render()
+    {
+        $posts = Post::where('title', 'like', '%' . $this->search . '%')
+            ->orWhere('content', 'like', '%' . $this->search . '%')
+            ->orderBy($this->sort, $this->direction)
+            ->paginate(10);
+        return view('livewire.show-posts', compact('posts'));
+    }
+
+Mas información acerca de los hooks de livewire
+
+https://laravel-livewire.com/docs/2.x/lifecycle-hooks
