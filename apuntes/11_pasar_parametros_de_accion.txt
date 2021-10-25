@@ -1,0 +1,22 @@
+Pasar parametros de acción
+
+Para pasar parametros de acción se envian a traves de blade con parentesis de la siguiente manera
+
+<a class="btn btn-green" wire:click="edit({{$item->id}})">
+                                        <i class="fas fa-edit"></i>
+</a>
+
+La función edit de dicho componente recibe como parametro una instancia de Post lo que permite pasar al item completo
+sin embargo esto ensuciara el código de forma innecesaria
+
+
+<a class="btn btn-green" wire:click="edit({{$item}})">
+                                        <i class="fas fa-edit"></i>
+</a>
+
+
+public function edit(Post $post)
+{
+    $this->open_edit = true;
+    $this->post = $post;
+}
