@@ -1,0 +1,43 @@
+Para añadir mas de un mismo componente en un archivo blade se debe enviar un key que seria un valor unico identificador para cada
+componente de esta forma livewire notaria la diferencia entre cada componente
+
+ @livewire('edit-post',['post' => $post] , key($post->id))
+
+Se pueden utilizar las propiedades del objeto pasado en mount directamente en el blade del componente para esto solo hay que
+definir la propiedad rules del componente
+
+En el  mount se recibe a post y se define como propiedad
+public function mount(Post $post)
+    {
+        $this->post = $post;
+
+        $this->identificador = rand();
+    }
+//De esta forma se validan dichos datos
+ protected $rules = [
+        'post.title' => 'required',
+        'post.content' => 'required'
+];
+
+
+//De esta forma se accede a dichas propiedades
+
+<x-jet-input wire:model="post.title" type="text" class="w-full" />
+
+<textarea wire:model="post.content" rows="6" class="form-control w-full"></textarea>
+
+
+//Eliminar una imagen
+
+En caso de que se modifique un objeto que ya contenga una imagen, primero se debe eliminar la imagen de dicho objeto
+como se muestra a continuación
+
+        if($this->image){
+            Storage::delete([$this->post->image]);
+
+            $this->post->image = $this->image->store('posts');
+        }
+
+Se pregunta si el componente tiene un valor en imagen, en caso de que si, accede al valor de la imagen y lo elimina del Storage
+despues se resguarda el valor de la variable imagen del componente como valor nuevo del post
+

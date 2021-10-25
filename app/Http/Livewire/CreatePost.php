@@ -9,9 +9,9 @@ class CreatePost extends Component
 {
     use WithFileUploads;
 
-    public $open = true;
+    public $open = false;
 
-    public $title, $content, $image,$identificador;
+    public $title, $content, $image, $identificador;
 
     public function mount()
     {
@@ -41,7 +41,7 @@ class CreatePost extends Component
 
         $this->identificador = rand();
 
-        $this->emitTo('show-post', 'render');
+        $this->emitTo('show-posts', 'render');
         $this->emit('alert', 'El post se creó satisfactoriamente');
     }
 
