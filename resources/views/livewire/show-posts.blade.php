@@ -14,7 +14,7 @@
                 <x-jet-input class="flex-1 mr-4" placeholder="Escriba que quiere buscar" type="search"
                     wire:model='search' />
 
-                    @livewire('create-post')
+                @livewire('create-post')
             </div>
 
             @if ($posts->count())
@@ -30,10 +30,10 @@
                                 {{-- Sort --}}
                                 @if ($sort == 'id')
 
-                                    @if($direction =='asc')
+                                    @if ($direction == 'asc')
                                         <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                                     @else
-                                    <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                        <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
                                     @endif
 
 
@@ -51,10 +51,10 @@
                                 {{-- Sort --}}
                                 @if ($sort == 'title')
 
-                                    @if($direction =='asc')
+                                    @if ($direction == 'asc')
                                         <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                                     @else
-                                    <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                        <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
                                     @endif
 
 
@@ -74,10 +74,10 @@
                                 {{-- Sort --}}
                                 @if ($sort == 'content')
 
-                                    @if($direction =='asc')
+                                    @if ($direction == 'asc')
                                         <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
                                     @else
-                                    <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                        <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
                                     @endif
 
 
@@ -116,7 +116,7 @@
 
                                 <td class="px-6 py-4  text-sm font-medium">
                                     {{-- @livewire('edit-item',['item' => $item] , key($item->id)) --}}
-                                    <a class="btn btn-green" wire:click="edit({{$item->id}})">
+                                    <a class="btn btn-green" wire:click="edit({{ $item->id }})">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
@@ -136,7 +136,11 @@
 
             @endif
 
-
+            @if ($posts->hasPages())
+                <div class="px-6 py-3">
+                    {{ $posts->links() }}
+                </div>
+            @endif
 
 
         </x-table>
@@ -149,7 +153,8 @@
         </x-slot>
         <x-slot name=content>
 
-            <div wire:loading wire:target="image" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <div wire:loading wire:target="image"
+                class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 <strong class="font-bold">¡Imagen cargando!</strong>
                 <span class="block sm:inline">Espere un momento hasta que la imagen se haya procesado</span>
             </div>
@@ -157,7 +162,7 @@
             @if ($image)
                 <img class="mb-4" src="{{ $image->temporaryUrl() }}" alt="">
             @else
-                <img src="{{Storage::url($post->image)}}" alt="">
+                <img src="{{ Storage::url($post->image) }}" alt="">
             @endif
 
             <div class="mb-4">

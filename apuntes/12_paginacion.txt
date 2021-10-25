@@ -1,0 +1,18 @@
+Paginación
+
+
+Para esto se debe utilizar la función paginate, pudiendose enviar un número de elementos en esté caso son 10
+
+$posts = Post::where('title', 'like', '%' . $this->search . '%')
+            ->orWhere('content', 'like', '%' . $this->search . '%')
+            ->orderBy($this->sort, $this->direction)
+            ->paginate(10);
+
+De lado del blade del componente se puede mostrar el paginado haciendo uso de la función links, en este caso tambien
+se usa la función pages para mostrar entonces los links cuando sea necesario
+
+@if ($posts->hasPages())
+                <div class="px-6 py-3">
+                    {{ $posts->links() }}
+                </div>
+@endif
