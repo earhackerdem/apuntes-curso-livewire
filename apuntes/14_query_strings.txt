@@ -1,0 +1,23 @@
+Se le llama queryString al hecho de enviar parametros a traves del enlace de la página
+de esta forma se puede compartir el enlace y que otra persona pueda ver exactamente los mismos datos
+ya que los parametros de dicho enlace afectan a la logica del componente y su estado
+
+
+public $queryString = [
+        'cant',
+        'sort',
+        'direction',
+        'search'
+        ];
+
+
+Se define una propiedad publica llamada queryString donde se puede utilizar un arreglo que defina las propiedades que deben
+mostrarse en el enlace, ademas pasandole un arreglo asociativo se puede definir que valores no mostrar en el enlace
+de esta forma por ejemplo no se mostrara el valor de cant cuando este sea 10(string) o el valor de sort cuando sea id
+
+public $queryString = [
+        'cant' => ['except' =>'10'],
+        'sort' => ['except' =>'id'],
+        'direction' => ['except' =>'desc'],
+        'search' => ['except' =>'']
+    ]
