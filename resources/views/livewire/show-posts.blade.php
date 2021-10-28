@@ -1,4 +1,4 @@
-<div>
+<div wire:init="loadPosts">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -14,7 +14,7 @@
 
                 <div class="flex items-center">
                     <span> Mostrar</span>
-                    <select wire:model="cant" class="mx-2 form-control" >
+                    <select wire:model="cant" class="mx-2 form-control">
                         <option value=10>10</option>
                         <option value=25>25</option>
                         <option value=50>50</option>
@@ -30,7 +30,7 @@
                 @livewire('create-post')
             </div>
 
-            @if ($posts->count())
+            @if (count($posts))
 
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -141,6 +141,13 @@
                         <!-- More people... -->
                     </tbody>
                 </table>
+
+                @if ($posts->hasPages())
+                    <div class="px-6 py-3">
+                        {{ $posts->links() }}
+                    </div>
+                @endif
+
             @else
 
                 <div class="px-6 py-4">
@@ -149,11 +156,7 @@
 
             @endif
 
-            @if ($posts->hasPages())
-                <div class="px-6 py-3">
-                    {{ $posts->links() }}
-                </div>
-            @endif
+
 
 
         </x-table>

@@ -1,0 +1,34 @@
+15 - Aplazar carga
+
+Livewire permite que el render de un componente suceda hasta que su contenedor se renderize primero, esto permite que la página se
+cargue por partes.
+
+<div wire:init="loadPosts">
+
+En este caso el div con wire:init="loadPosts" lo que hace es mandar a traer una función dentro del controlador del componente que
+realiza la consulta de los datos a la base de datos
+
+//propiedad del componente
+public $readyToLoad = false;
+
+
+public function loadPosts()
+    {
+        $this->readyToLoad = true;
+    }
+
+Lo que cambia el valor de la propiedad readyToLoad y permite así que se busque a la bd
+
+public function render()
+    {
+        if ($this->readyToLoad) {
+            $posts = Post::where('title', 'like', '%' . $this->search . '%')
+                ->orWhere('content', 'like', '%' . $this->search . '%')
+                ->orderBy($this->sort, $this->direction)
+                ->paginate($this->cant);
+        }else{
+            $posts = [];
+        }
+
+        return view('livewire.show-posts', compact('posts'));
+    }
