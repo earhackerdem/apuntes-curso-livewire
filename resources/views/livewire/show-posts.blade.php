@@ -127,10 +127,14 @@
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4  text-sm font-medium">
+                                <td class="px-6 py-4  text-sm font-medium flex">
                                     {{-- @livewire('edit-item',['item' => $item] , key($item->id)) --}}
                                     <a class="btn btn-green" wire:click="edit({{ $item->id }})">
                                         <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <a class="btn btn-red ml-2" wire:click="$emit('deletePost',{{ $item->id }})">
+                                        <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -206,5 +210,30 @@
             </x-jet-danger-button>
         </x-slot>
     </x-jet-dialog-modal>
+
+    @push('js')
+        <script>
+            Livewire.on('deletePost', postId => {
+                Swal.fire({
+                    title: '¿Esta seguro?',
+                    text: "No podra revertir esta acción",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.emitTo('show-posts', 'delete', postId);
+                        Swal.fire(
+                            'Eliminado',
+                            'El Post ha sido eliminado',
+                            'success'
+                        )
+                    }
+                })
+            })
+        </script>
+    @endpush
 
 </div>

@@ -1,0 +1,38 @@
+Para utilizar la confirmación de sweatAlert se utiliza la emisión y escucha de eventos
+
+En el boton de eliminar se añade lo siguiente, la emisión del evento deletePost, enviando el id del post como parametro
+
+<a class="btn btn-red ml-2" wire:click="$emit('deletePost',{{ $item->id }})">
+    <i class="fas fa-trash"></i>
+</a>
+
+
+En javaScript de escucha el evento deletePost recibiendo el parametro postId con lo cual utiliza un callback
+en el cual levanta la confirmación que ofrece sweatAlert, despues en caso de recibir una confirmación se emite otro evento
+esta ves directamente desde javaScript usando Livewire.emitTo('componente','evento','parametro')
+
+
+<script>
+            Livewire.on('deletePost', postId => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.emitTo('show-posts', 'delete', postId);
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+            })
+</script>
+
+
