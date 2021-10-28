@@ -1,0 +1,36 @@
+Ckeditor
+
+Para utilizar el plugin se debe integrar el CDN en un stack, en este caso en el archivo principal app.blade.php
+
+
+@stack('js')
+
+El el archivo donde se usa el editor en este caso create-post se utiliza la directiva push
+
+ @push('js')
+        <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+        <script>
+            ClassicEditor
+                .create( document.querySelector( '#editor' ) )
+                .then(function(editor){
+                    editor.model.document.on('change:data',()=>{
+                        @this.set('content',editor.getData());
+                    });
+                })
+                .catch( error => {
+                    console.error( error );
+                } );
+        </script>
+@endpush
+
+<div class="mb-4">
+                <x-jet-label value="Contenido del post" />
+                <div wire:ignore>
+                    <textarea id="editor" class="form-control w-full" rows="6" wire:model.defer="content">{{$content}}</textarea>
+                </div>
+                <x-jet-input-error for="content" />
+</div>
+
+Se añade wire:ignore con la finalidad de que cada ves que renderize ignore la zona que tiene cargado al plugin
+Se incluye a Ckeditor con su CDN, despues de eso con then se recibe al editor, en cada cambio de dicho editor
+se utiliza a @this.set() para definir que el contenido se tomara del editor.getData
