@@ -29,7 +29,8 @@
             <div class="mb-4">
                 <x-jet-label value="Contenido del post" />
                 <div wire:ignore>
-                    <textarea id="editor" class="form-control w-full" rows="6" wire:model.defer="content">{{$content}}</textarea>
+                    <textarea id="editor" class="form-control w-full" rows="6"
+                        wire:model.defer="content">{!! $content !!}</textarea>
                 </div>
                 <x-jet-input-error for="content" />
             </div>
@@ -55,15 +56,19 @@
         <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
         <script>
             ClassicEditor
-                .create( document.querySelector( '#editor' ) )
-                .then(function(editor){
-                    editor.model.document.on('change:data',()=>{
-                        @this.set('content',editor.getData());
+                .create(document.querySelector('#editor'))
+                .then(function(editor) {
+                    editor.model.document.on('change:data', () => {
+                        @this.set('content', editor.getData());
+                    });
+
+                    Livewire.on('resetCKEditor', function() {
+                        editor.setData('');
                     });
                 })
-                .catch( error => {
-                    console.error( error );
-                } );
+                .catch(error => {
+                    console.error(error);
+                });
         </script>
     @endpush
 

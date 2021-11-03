@@ -123,7 +123,7 @@
                                 </td>
                                 <td class="px-6 py-4 ">
                                     <div class="text-sm text-gray-900">
-                                        {{ $item->content }}
+                                       {!! $item->content !!}
                                     </div>
                                 </td>
 
@@ -181,7 +181,7 @@
 
             @if ($image)
                 <img class="mb-4" src="{{ $image->temporaryUrl() }}" alt="">
-            @else
+            @elseif($post->image)
                 <img src="{{ Storage::url($post->image) }}" alt="">
             @endif
 
