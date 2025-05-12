@@ -1,0 +1,16 @@
+.git
+.gitignore
+.gitattributes
+.env
+.env.*
+node_modules
+vendor
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+storage/logs/**
+docker/
+.editorconfig
+.styleci.yml
+README.md
+phpunit.xml

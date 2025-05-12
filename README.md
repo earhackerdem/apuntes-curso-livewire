@@ -1,3 +1,5 @@
+# Apuntes Curso Livewire
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -7,59 +9,107 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Estado Actual del Proyecto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este proyecto es una aplicación de gestión de posts desarrollada con Laravel 8 y Livewire 2.5. Actualmente cuenta con las siguientes características:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Funcionalidades implementadas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Sistema de autenticación mediante Jetstream
+- CRUD completo de Posts (Crear, Leer, Actualizar, Eliminar)
+- Carga de imágenes para los posts
+- Búsqueda y filtrado de posts
+- Paginación de resultados
+- Ordenamiento de posts por diferentes criterios
 
-## Learning Laravel
+### Componentes Livewire
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **ShowPosts**: Visualización y gestión de la lista de posts
+- **CreatePost**: Formulario para la creación de nuevos posts
+- **EditPost**: Formulario para la edición de posts existentes
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Tecnologías utilizadas
 
-## Laravel Sponsors
+- **Laravel 8**
+- **Livewire 2.5**
+- **Jetstream**
+- **MySQL**
+- **Tailwind CSS**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Ejecutar con Docker
 
-### Premium Partners
+### Requisitos previos
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- Docker
+- Docker Compose
 
-## Contributing
+### Pasos para ejecutar el proyecto
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Clonar este repositorio
+   ```bash
+   git clone [url-del-repositorio]
+   cd [nombre-del-repositorio]
+   ```
 
-## Code of Conduct
+2. Ejecutar el script de inicio (esto configurará todo el entorno Docker)
+   ```bash
+   ./docker-compose-up.sh
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. Acceder a la aplicación
+   ```
+   http://localhost:8000
+   ```
 
-## Security Vulnerabilities
+### Estructura de Docker
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+El proyecto está configurado con los siguientes servicios:
 
-## License
+- **app**: Servicio PHP que ejecuta la aplicación Laravel
+- **db**: Servicio MySQL para la base de datos
+- **nginx**: Servidor web para servir la aplicación
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Comandos útiles
+
+- Iniciar los contenedores: `docker-compose up -d`
+- Detener los contenedores: `docker-compose down`
+- Ejecutar comandos en el contenedor: `docker-compose exec app [comando]`
+- Ver logs: `docker-compose logs -f`
+
+## Desarrollo local sin Docker
+
+### Requisitos
+
+- PHP >= 7.3
+- Composer
+- Node.js y NPM
+- MySQL
+
+### Configuración
+
+1. Clonar el repositorio
+2. Instalar dependencias PHP:
+   ```bash
+   composer install
+   ```
+3. Configurar el archivo `.env` con las credenciales de tu base de datos
+4. Generar clave de aplicación:
+   ```bash
+   php artisan key:generate
+   ```
+5. Ejecutar migraciones:
+   ```bash
+   php artisan migrate
+   ```
+6. Instalar dependencias de frontend:
+   ```bash
+   npm install && npm run dev
+   ```
+7. Iniciar el servidor:
+   ```bash
+   php artisan serve
+   ```
+
+## Licencia
+
+Este proyecto utiliza [la licencia MIT](https://opensource.org/licenses/MIT).
