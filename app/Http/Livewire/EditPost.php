@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Post;
-use Livewire\{Component, WithFileUploads};
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Rule;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -12,17 +14,21 @@ class EditPost extends Component
     use WithFileUploads;
 
     public $open = false;
-    public $post, $image, $identificador;
+    public $post;
+    public $image;
+    public $identificador;
 
-    protected $rules = [
-        'post.title' => 'required',
-        'post.content' => 'required'
-    ];
+    #[Rule('required')]
+    public $title;
+
+    #[Rule('required')]
+    public $content;
 
     public function mount(Post $post)
     {
         $this->post = $post;
-
+        $this->title = $post->title;
+        $this->content = $post->content;
         $this->identificador = rand();
     }
 
@@ -30,21 +36,21 @@ class EditPost extends Component
     {
         $this->validate();
 
-        if($this->image){
-            Storage::delete([$this->post->image]);
+        $this->post->title = $this->title;
+        $this->post->content = $this->content;
 
+        if ($this->image) {
+            Storage::delete([$this->post->image]);
             $this->post->image = $this->image->store('posts');
         }
 
         $this->post->save();
 
-        $this->reset(['open','image']);
-
+        $this->reset(['open', 'image']);
         $this->identificador = rand();
 
-        $this->emitTo('show-posts', 'render');
-
-        $this->emit('alert', 'El post se actualizo satisfactoriamente');
+        $this->dispatch('render')->to('show-posts');
+        $this->dispatch('alert', message: 'El post se actualizó satisfactoriamente');
     }
 
     public function render()

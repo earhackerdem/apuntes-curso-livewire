@@ -14,8 +14,15 @@ return new class extends Migration
      */
     public function up()
     {
-        // Modificar la columna content a TEXT usando SQL raw
-        DB::statement('ALTER TABLE posts MODIFY content TEXT');
+        if (DB::getDriverName() === 'sqlite') {
+            // Para SQLite, recrear la tabla con la nueva columna
+            Schema::table('posts', function (Blueprint $table) {
+                $table->text('content')->change();
+            });
+        } else {
+            // Para MySQL, usar ALTER TABLE
+            DB::statement('ALTER TABLE posts MODIFY content TEXT');
+        }
     }
 
     /**
@@ -25,7 +32,14 @@ return new class extends Migration
      */
     public function down()
     {
-        // Regresar la columna content a VARCHAR
-        DB::statement('ALTER TABLE posts MODIFY content VARCHAR(255)');
+        if (DB::getDriverName() === 'sqlite') {
+            // Para SQLite, recrear la tabla con la nueva columna
+            Schema::table('posts', function (Blueprint $table) {
+                $table->string('content')->change();
+            });
+        } else {
+            // Para MySQL, usar ALTER TABLE
+            DB::statement('ALTER TABLE posts MODIFY content VARCHAR(255)');
+        }
     }
 };

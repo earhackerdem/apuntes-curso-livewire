@@ -25,7 +25,7 @@
         <x-banner />
 
         <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+            <livewire:navigation-menu />
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -49,12 +49,14 @@
         @stack('js')
 
         <script>
-            Livewire.on('alert',(message)=>{
-                Swal.fire(
-                 'Good job!',
-                 message,
-                 'success'
-                )
+            document.addEventListener('livewire:initialized', () => {
+                Livewire.on('alert', (event) => {
+                    Swal.fire(
+                        'Good job!',
+                        event.message,
+                        'success'
+                    )
+                });
             });
         </script>
 

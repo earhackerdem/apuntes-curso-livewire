@@ -3,7 +3,7 @@
         <i class="fas fa-edit"></i>
     </a>
 
-    <x-jet-dialog-modal wire:model="open">
+    <x-jet-dialog-modal wire:model.live="open">
         <x-slot name=title>
             Editar el post
         </x-slot>
@@ -22,12 +22,12 @@
 
             <div class="mb-4">
                 <x-jet-label value="Titulo del post" />
-                <x-jet-input wire:model="post.title" type="text" class="w-full" />
+                <x-jet-input wire:model="title" type="text" class="w-full" />
             </div>
 
             <div>
                 <x-jet-label value="Contenido del post" />
-                <textarea wire:model="post.content" rows="6" class="form-control w-full"></textarea>
+                <textarea wire:model="content" rows="6" class="form-control w-full"></textarea>
             </div>
 
             <div>
@@ -40,7 +40,7 @@
             <x-jet-secondary-button wire:click="$set('open',false)">
                 Cancelar
             </x-jet-secondary-button>
-            <x-jet-danger-button wire:click="save" wire:loading.attr="disabled" class="disabled:opacity-25">
+            <x-jet-danger-button wire:click="save" wire:loading.attr="disabled" wire:target="save, image" class="disabled:opacity-25">
                 Actualizar
             </x-jet-danger-button>
         </x-slot>

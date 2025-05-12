@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Post;
-use Livewire\{Component, WithFileUploads};
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Rule;
 
 class CreatePost extends Component
 {
@@ -11,22 +13,24 @@ class CreatePost extends Component
 
     public $open = false;
 
-    public $title, $content, $image, $identificador;
+    #[Rule('required')]
+    public $title;
+
+    #[Rule('required')]
+    public $content;
+
+    #[Rule('required|image|max:2048')]
+    public $image;
+
+    public $identificador;
 
     public function mount()
     {
         $this->identificador = rand();
     }
 
-    protected $rules = [
-        'title' => 'required',
-        'content' => 'required',
-        'image' => 'required|image|max:2048'
-    ];
-
     public function save()
     {
-
         $this->validate();
 
         $image = $this->image->store('posts');
@@ -37,12 +41,11 @@ class CreatePost extends Component
             'image' => $image
         ]);
 
-        $this->reset(['open', 'title', 'content','image']);
-
+        $this->reset(['open', 'title', 'content', 'image']);
         $this->identificador = rand();
 
-        $this->emitTo('show-posts', 'render');
-        $this->emit('alert', 'El post se creó satisfactoriamente');
+        $this->dispatch('render')->to('show-posts');
+        $this->dispatch('alert', message: 'El post se creó satisfactoriamente');
     }
 
     public function render()
@@ -52,10 +55,10 @@ class CreatePost extends Component
 
     public function updatingOpen()
     {
-        if($this->open == false){
-            $this->reset(['title','content','image']);
+        if ($this->open == false) {
+            $this->reset(['title', 'content', 'image']);
             $this->identificador = rand();
-            $this->emit('resetCKEditor');
+            $this->dispatch('resetCKEditor');
         }
     }
 }

@@ -4,7 +4,7 @@
     </x-danger-button>
 
 
-    <x-dialog-modal wire:model="open">
+    <x-dialog-modal wire:model.live="open">
         <x-slot name="title">
             Crear nuevo post
         </x-slot>
@@ -22,7 +22,7 @@
 
             <div class="mb-4">
                 <x-label value="Título del post" />
-                <x-input type="text" class="w-full" wire:model.defer="title" />
+                <x-input type="text" class="w-full" wire:model="title" />
 
                 <x-input-error for="title" />
             </div>
@@ -30,7 +30,7 @@
                 <x-label value="Contenido del post" />
                 <div wire:ignore>
                     <textarea id="editor" class="form-control w-full" rows="6"
-                        wire:model.defer="content">{!! $content !!}</textarea>
+                        wire:model="content">{!! $content !!}</textarea>
                 </div>
                 <x-input-error for="content" />
             </div>

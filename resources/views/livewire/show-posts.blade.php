@@ -14,7 +14,7 @@
 
                 <div class="flex items-center">
                     <span> Mostrar</span>
-                    <select wire:model="cant" class="mx-2 form-control">
+                    <select wire:model.live="cant" class="mx-2 form-control">
                         <option value=10>10</option>
                         <option value=25>25</option>
                         <option value=50>50</option>
@@ -25,9 +25,9 @@
                 </div>
 
                 <x-input class="flex-1 mx-4" placeholder="Escriba que quiere buscar" type="search"
-                    wire:model='search' />
+                    wire:model.live.debounce.500ms="search" />
 
-                @livewire('create-post')
+                <livewire:create-post />
             </div>
 
             @if (count($posts))
@@ -128,12 +128,11 @@
                                 </td>
 
                                 <td class="px-6 py-4  text-sm font-medium flex">
-                                    {{-- @livewire('edit-item',['item' => $item] , key($item->id)) --}}
                                     <a class="btn btn-green" wire:click="edit({{ $item->id }})">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a class="btn btn-red ml-2" wire:click="$emit('deletePost',{{ $item->id }})">
+                                    <a class="btn btn-red ml-2" wire:click="$dispatch('delete', { post: {{ $item->id }} })">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -167,7 +166,7 @@
 
     </div>
 
-    <x-dialog-modal wire:model="open_edit">
+    <x-dialog-modal wire:model.live="open_edit">
         <x-slot name=title>
             Editar el post
         </x-slot>
@@ -187,53 +186,66 @@
 
             <div class="mb-4">
                 <x-label value="Titulo del post" />
-                <x-input wire:model="post.title" type="text" class="w-full" />
+                <x-input wire:model="post_title" type="text" class="w-full" />
             </div>
 
             <div>
                 <x-label value="Contenido del post" />
-                <textarea wire:model="post.content" rows="6" class="form-control w-full"></textarea>
+                <textarea wire:model="post_content" rows="6" class="form-control w-full"></textarea>
             </div>
 
             <div>
                 <input type="file" wire:model="image" id="{{ $identificador }}">
                 <x-input-error for="image" />
             </div>
-
         </x-slot>
+
         <x-slot name=footer>
-            <x-secondary-button wire:click="$set('open_edit',false)">
+            <x-secondary-button wire:click="$set('open_edit', false)">
                 Cancelar
             </x-secondary-button>
-            <x-danger-button wire:click="update" wire:loading.attr="disabled" class="disabled:opacity-25">
+
+            <x-danger-button wire:click="update" wire:loading.attr="disabled" wire:target="update, image" class="disabled:opacity-25">
                 Actualizar
             </x-danger-button>
         </x-slot>
+
     </x-dialog-modal>
 
-    @push('js')
-        <script>
-            Livewire.on('deletePost', postId => {
-                Swal.fire({
-                    title: '¿Esta seguro?',
-                    text: "No podra revertir esta acción",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Eliminar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Livewire.emitTo('show-posts', 'delete', postId);
-                        Swal.fire(
-                            'Eliminado',
-                            'El Post ha sido eliminado',
-                            'success'
-                        )
-                    }
-                })
-            })
-        </script>
-    @endpush
-
 </div>
+@push('js')
+    <script src="sweetalert2.all.min.js"></script>
+
+    <script>
+        Livewire.on('alert', function(message) {
+            Swal.fire(
+                'Buen trabajo!',
+                message,
+                'success'
+            )
+        });
+    </script>
+
+    <script>
+        Livewire.on('deletePost', postId => {
+            Swal.fire({
+                title: '¿Estas seguro?',
+                text: "No podras revertir esta accion!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Eliminar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('delete', { post: postId });
+                    Swal.fire(
+                        'Borrado!',
+                        'Tu registro fue eliminado.',
+                        'success'
+                    )
+                }
+            })
+        });
+    </script>
+@endpush

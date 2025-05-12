@@ -31,3 +31,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/teams', [TeamController::class, 'store'])->name('teams.store');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
 });
+
