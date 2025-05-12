@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.2-fpm
 
 # Argumentos definidos en docker-compose.yml
 ARG user=laravel
@@ -11,15 +11,19 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libwebp-dev \
+    libxpm-dev \
     zip \
     unzip \
-    libzip-dev
-
-# Limpiar cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    libzip-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Instalar extensiones de PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
+RUN docker-php-ext-install -j$(nproc) pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Obtener Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -34,6 +38,11 @@ WORKDIR /var/www
 
 # Copiar permisos de la aplicación existente
 COPY --chown=$user:www-data . /var/www
+
+# Instalar dependencias de Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm
 
 # Cambiar al usuario
 USER $user

@@ -24,7 +24,7 @@
                     <span>entradas</span>
                 </div>
 
-                <x-jet-input class="flex-1 mx-4" placeholder="Escriba que quiere buscar" type="search"
+                <x-input class="flex-1 mx-4" placeholder="Escriba que quiere buscar" type="search"
                     wire:model='search' />
 
                 @livewire('create-post')
@@ -167,7 +167,7 @@
 
     </div>
 
-    <x-jet-dialog-modal wire:model="open_edit">
+    <x-dialog-modal wire:model="open_edit">
         <x-slot name=title>
             Editar el post
         </x-slot>
@@ -186,30 +186,30 @@
             @endif
 
             <div class="mb-4">
-                <x-jet-label value="Titulo del post" />
-                <x-jet-input wire:model="post.title" type="text" class="w-full" />
+                <x-label value="Titulo del post" />
+                <x-input wire:model="post.title" type="text" class="w-full" />
             </div>
 
             <div>
-                <x-jet-label value="Contenido del post" />
+                <x-label value="Contenido del post" />
                 <textarea wire:model="post.content" rows="6" class="form-control w-full"></textarea>
             </div>
 
             <div>
                 <input type="file" wire:model="image" id="{{ $identificador }}">
-                <x-jet-input-error for="image" />
+                <x-input-error for="image" />
             </div>
 
         </x-slot>
         <x-slot name=footer>
-            <x-jet-secondary-button wire:click="$set('open_edit',false)">
+            <x-secondary-button wire:click="$set('open_edit',false)">
                 Cancelar
-            </x-jet-secondary-button>
-            <x-jet-danger-button wire:click="update" wire:loading.attr="disabled" class="disabled:opacity-25">
+            </x-secondary-button>
+            <x-danger-button wire:click="update" wire:loading.attr="disabled" class="disabled:opacity-25">
                 Actualizar
-            </x-jet-danger-button>
+            </x-danger-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     @push('js')
         <script>

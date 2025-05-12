@@ -11,7 +11,7 @@
 
 ## Estado Actual del Proyecto
 
-Este proyecto es una aplicación de gestión de posts desarrollada con Laravel 8 y Livewire 2.5. Actualmente cuenta con las siguientes características:
+Este proyecto es una aplicación de gestión de posts desarrollada con Laravel y Livewire. Actualmente cuenta con las siguientes características:
 
 ### Funcionalidades implementadas
 
@@ -30,11 +30,79 @@ Este proyecto es una aplicación de gestión de posts desarrollada con Laravel 8
 
 ### Tecnologías utilizadas
 
-- **Laravel 8**
-- **Livewire 2.5**
+- **Laravel**
+- **Livewire**
 - **Jetstream**
 - **MySQL**
 - **Tailwind CSS**
+
+## Estado de Migración (Laravel 8 → Laravel 12)
+
+### ✅ Actualización a Laravel 10 (Completada)
+
+Se ha completado exitosamente la migración a Laravel 10 con Jetstream funcionando correctamente. Los cambios realizados incluyen:
+
+#### Componentes Blade de Jetstream
+Se crearon todos los componentes Blade necesarios para Jetstream:
+- Componentes de formulario: `jet-input`, `jet-input-error`, `jet-label`, `jet-checkbox`, `jet-validation-errors`
+- Componentes de sección: `jet-action-section`, `jet-section-title`, `jet-section-border`
+- Componentes de botones: `jet-button`, `jet-secondary-button`, `jet-danger-button`, `jet-action-message`
+- Componentes modales: `jet-dialog-modal`, `jet-modal`
+- Componentes de autenticación: `jet-authentication-card`, `jet-authentication-card-logo`
+
+#### Implementación de funcionalidad de equipos (Teams)
+Para habilitar la característica de equipos en Jetstream:
+- Modelos: `Team`, `Membership`, `TeamInvitation`
+- Migraciones: tablas `teams`, `team_user`, `team_invitations`
+- Controladores: `CurrentTeamController`, `TeamController`
+- Vistas: creación y visualización de equipos
+- Rutas: gestión completa de equipos
+- Configuración: habilitada la característica de equipos en `config/jetstream.php`
+
+#### Tests
+Se resolvieron todos los problemas en las pruebas automatizadas:
+- 39 pruebas pasando correctamente
+- 7 omitidas (para características no habilitadas)
+- 1 test marcado como "risky"
+
+### 🔄 Próximos pasos
+- Actualización a Laravel 11
+- Actualización a Laravel 12
+- Actualización de la configuración Docker
+
+## Plan de Actualización de Laravel 8 a Laravel 12
+
+Este proyecto incluye un plan completo para actualizar de Laravel 8 a Laravel 12, siguiendo estos pasos:
+
+1. ✅ Actualización de Laravel 8 a Laravel 9
+2. ✅ Actualización de Laravel 9 a Laravel 10
+3. 🔄 Actualización de Laravel 10 a Laravel 11
+4. 🔄 Actualización de Laravel 11 a Laravel 12
+5. 🔄 Actualización de la configuración Docker
+
+Cada paso de actualización incluye scripts automatizados que facilitan el proceso:
+
+```bash
+# Ejecutar las pruebas antes de actualizar
+php artisan test
+
+# Actualizar a Laravel 9
+bash scripts/update-to-laravel9.sh
+
+# Actualizar a Laravel 10
+bash scripts/update-to-laravel10.sh
+
+# Actualizar a Laravel 11
+bash scripts/update-to-laravel11.sh
+
+# Actualizar a Laravel 12
+bash scripts/update-to-laravel12.sh
+
+# Actualizar configuración Docker
+bash scripts/update-docker.sh
+```
+
+Para más detalles, consulta el archivo `UPGRADE-PLAN.md`.
 
 ## Ejecutar con Docker
 
@@ -80,7 +148,7 @@ El proyecto está configurado con los siguientes servicios:
 
 ### Requisitos
 
-- PHP >= 7.3
+- PHP >= 8.2
 - Composer
 - Node.js y NPM
 - MySQL

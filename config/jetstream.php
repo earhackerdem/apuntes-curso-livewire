@@ -1,6 +1,9 @@
 <?php
 
 use Laravel\Jetstream\Features;
+use App\Models\Team;
+use App\Models\Membership;
+use App\Models\TeamInvitation;
 
 return [
 
@@ -45,7 +48,7 @@ return [
         // Features::termsAndPrivacyPolicy(),
         // Features::profilePhotos(),
         // Features::api(),
-        // Features::teams(['invitations' => true]),
+        Features::teams(['invitations' => true]),
         Features::accountDeletion(),
     ],
 
@@ -61,5 +64,22 @@ return [
     */
 
     'profile_photo_disk' => 'public',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Models
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify your own custom models for Jetstream components.
+    | This allows you to use your own models rather than the default ones
+    | provided by Jetstream.
+    |
+    */
+
+    'models' => [
+        'team' => Team::class,
+        'membership' => Membership::class,
+        'team_invitation' => TeamInvitation::class,
+    ],
 
 ];

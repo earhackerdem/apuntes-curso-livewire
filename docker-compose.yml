@@ -30,7 +30,7 @@ services:
       - laravel-livewire
 
   nginx:
-    image: nginx:1.21
+    image: nginx:alpine
     container_name: laravel-livewire-nginx
     restart: unless-stopped
     ports:
