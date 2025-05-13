@@ -50,12 +50,53 @@
 
         <script>
             document.addEventListener('livewire:initialized', () => {
-                Livewire.on('alert', (event) => {
-                    Swal.fire(
-                        'Good job!',
-                        event.message,
-                        'success'
-                    )
+                Livewire.on('alert', function(message) {
+                    console.log('Tipo de mensaje recibido:', typeof message, message);
+
+                    let text = '';
+
+                    try {
+                        // Si message es directamente un objeto (no un array)
+                        if (message && typeof message === 'object' && !Array.isArray(message)) {
+                            if (message.message) {
+                                text = message.message;
+                            } else {
+                                // Intentamos convertir el objeto a string de forma legible
+                                text = JSON.stringify(message);
+                            }
+                        }
+                        // Si es un array, tomamos el primer elemento
+                        else if (Array.isArray(message)) {
+                            text = message[0] || '';
+                        }
+                        // Si es un string simple
+                        else if (typeof message === 'string') {
+                            text = message;
+                        }
+                        // Cualquier otro caso, convertimos a string
+                        else {
+                            text = String(message);
+                        }
+
+                        // Limpiamos el mensaje de corchetes y comillas si parece un array o objeto serializado
+                        if (text.startsWith('[') && text.endsWith(']')) {
+                            try {
+                                const parsed = JSON.parse(text);
+                                if (Array.isArray(parsed) && parsed.length > 0) {
+                                    text = parsed[0];
+                                }
+                            } catch(e) {}
+                        }
+                    } catch(e) {
+                        console.error('Error al procesar el mensaje:', e);
+                        text = 'Acción completada correctamente';
+                    }
+
+                    Swal.fire({
+                        title: 'Buen trabajo!',
+                        text: text,
+                        icon: 'success'
+                    });
                 });
             });
         </script>

@@ -22,7 +22,7 @@
 
             <div class="mb-4">
                 <x-label value="Título del post" />
-                <x-input type="text" class="w-full" wire:model="title" />
+                <x-input type="text" class="w-full" wire:model.live="title" />
 
                 <x-input-error for="title" />
             </div>
@@ -30,13 +30,13 @@
                 <x-label value="Contenido del post" />
                 <div wire:ignore>
                     <textarea id="editor" class="form-control w-full" rows="6"
-                        wire:model="content">{!! $content !!}</textarea>
+                        wire:model.live="content">{!! $content !!}</textarea>
                 </div>
                 <x-input-error for="content" />
             </div>
 
             <div>
-                <input type="file" wire:model="image" id="{{ $identificador }}">
+                <input type="file" wire:model.live="image" id="{{ $identificador }}">
                 <x-input-error for="image" />
             </div>
 
@@ -62,8 +62,10 @@
                         @this.set('content', editor.getData());
                     });
 
-                    Livewire.on('resetCKEditor', function() {
-                        editor.setData('');
+                    document.addEventListener('livewire:initialized', () => {
+                        Livewire.on('resetCKEditor', function() {
+                            editor.setData('');
+                        });
                     });
                 })
                 .catch(error => {

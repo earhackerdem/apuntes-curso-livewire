@@ -111,12 +111,18 @@ class ShowPosts extends Component
         $this->reset(['open_edit', 'image']);
         $this->identificador = rand();
 
-        $this->dispatch('alert', message: 'El post se actualizó satisfactoriamente');
+        $this->dispatch('alert', 'El post se actualizó satisfactoriamente');
     }
 
     #[On('delete')]
     public function delete(Post $post)
     {
         $post->delete();
+    }
+
+    #[On('render')]
+    public function refresh()
+    {
+        $this->readyToLoad = true;
     }
 }

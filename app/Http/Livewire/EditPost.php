@@ -49,8 +49,8 @@ class EditPost extends Component
         $this->reset(['open', 'image']);
         $this->identificador = rand();
 
-        $this->dispatch('render')->to('show-posts');
-        $this->dispatch('alert', message: 'El post se actualizó satisfactoriamente');
+        $this->dispatch('render');
+        $this->dispatch('alert', 'El post se actualizó satisfactoriamente');
     }
 
     public function render()

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'class_namespace' => 'App\\Livewire',
+    'class_namespace' => 'App\\Http\\Livewire',
 
     /*
     |---------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'layout' => 'components.layouts.app',
+    'layout' => 'layouts.app',
 
     /*
     |---------------------------------------------------------------------------
@@ -157,4 +157,23 @@ return [
     */
 
     'pagination_theme' => 'tailwind',
+
+    /*
+    |---------------------------------------------------------------------------
+    | Aliased Components
+    |---------------------------------------------------------------------------
+    |
+    | Livewire allows you to alias components for easier access from your Blade
+    | views. This configuration option allows you to define these aliases.
+    | These aliases will automatically be registered for you.
+    |
+    | Example: 'create-post' => App\Http\Livewire\CreatePost::class
+    |
+    */
+
+    'aliases' => [
+        'create-post' => App\Http\Livewire\CreatePost::class,
+        'show-posts' => App\Http\Livewire\ShowPosts::class,
+        'edit-post' => App\Http\Livewire\EditPost::class,
+    ],
 ];

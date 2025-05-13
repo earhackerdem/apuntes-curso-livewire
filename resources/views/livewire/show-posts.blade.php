@@ -214,38 +214,30 @@
 
 </div>
 @push('js')
-    <script src="sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        Livewire.on('alert', function(message) {
-            Swal.fire(
-                'Buen trabajo!',
-                message,
-                'success'
-            )
-        });
-    </script>
-
-    <script>
-        Livewire.on('deletePost', postId => {
-            Swal.fire({
-                title: '¿Estas seguro?',
-                text: "No podras revertir esta accion!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, Eliminar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch('delete', { post: postId });
-                    Swal.fire(
-                        'Borrado!',
-                        'Tu registro fue eliminado.',
-                        'success'
-                    )
-                }
-            })
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('deletePost', postId => {
+                Swal.fire({
+                    title: '¿Estas seguro?',
+                    text: "No podras revertir esta accion!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Eliminar!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('delete', { post: postId });
+                        Swal.fire(
+                            'Borrado!',
+                            'Tu registro fue eliminado.',
+                            'success'
+                        )
+                    }
+                })
+            });
         });
     </script>
 @endpush

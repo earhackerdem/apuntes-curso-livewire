@@ -44,8 +44,8 @@ class CreatePost extends Component
         $this->reset(['open', 'title', 'content', 'image']);
         $this->identificador = rand();
 
-        $this->dispatch('render')->to('show-posts');
-        $this->dispatch('alert', message: 'El post se creó satisfactoriamente');
+        $this->dispatch('render');
+        $this->dispatch('alert', 'El post se creó satisfactoriamente');
     }
 
     public function render()
